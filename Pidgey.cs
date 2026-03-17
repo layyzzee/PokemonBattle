@@ -10,6 +10,11 @@ namespace PokemonBattle
     {
         public Pidgey() : base("Pidgey", PokemonType.Normal, 36, 48, 32, 63)
         {
+            LearnedMoves.Add("Tackle");
+            LearnedMoves.Add("Gust");
+            LearnedMoves.Add("Wing Attack");
+            LearnedMoves.Add("Scratch");
+
         }
     }
 }

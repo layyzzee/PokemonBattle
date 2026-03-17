@@ -10,7 +10,10 @@ namespace PokemonBattle
     {
         public Charmander() : base("Charmander", PokemonType.Fire, 39, 52, 43, 65)
         {
-
+            LearnedMoves.Add("Tackle");
+            LearnedMoves.Add("Ember");
+            LearnedMoves.Add("Fire Punch");
+            LearnedMoves.Add("Scratch");
         }
     }
 }

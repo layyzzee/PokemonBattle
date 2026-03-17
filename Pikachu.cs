@@ -10,6 +10,10 @@ namespace PokemonBattle
     {
         public Pikachu() : base("Pikachu", PokemonType.Electric, 45, 45, 45, 45)
         {
+            LearnedMoves.Add("Tackle");
+            LearnedMoves.Add("Thunder Shock");
+            LearnedMoves.Add("Spark");
+            LearnedMoves.Add("Scratch");
         }
     }
 }

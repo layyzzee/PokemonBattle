@@ -11,9 +11,9 @@ namespace PokemonBattle
         Normal = 0,
         Fire = 1,
         Water = 2,
-        Grass = 3,
-        Flying = 4,
-        Electric = 5,
-        Poison = 6
+        Grass = 4,
+        Flying = 8,
+        Electric = 16,
+        Poison = 32,    
     }
 }
