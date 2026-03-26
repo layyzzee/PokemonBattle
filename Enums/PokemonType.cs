@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PokemonBattle
+namespace PokemonBattle.Enums
 {
     public enum PokemonType
     {

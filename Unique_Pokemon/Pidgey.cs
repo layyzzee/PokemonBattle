@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PokemonBattle.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,14 +7,15 @@ using System.Threading.Tasks;
 
 namespace PokemonBattle
 {
-    internal class Charmander : Pokemon
+    internal class Pidgey : Pokemon
     {
-        public Charmander() : base("Charmander", PokemonType.Fire, 39, 52, 43, 65)
+        public Pidgey() : base("Pidgey", PokemonType.Normal, 36, 48, 32, 63)
         {
             LearnedMoves.Add("Tackle");
-            LearnedMoves.Add("Ember");
-            LearnedMoves.Add("Fire Punch");
+            LearnedMoves.Add("Gust");
+            LearnedMoves.Add("Wing Attack");
             LearnedMoves.Add("Scratch");
+
         }
     }
 }
