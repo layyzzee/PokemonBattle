@@ -11,10 +11,7 @@ namespace PokemonBattle
         //Creating a pokemon getter so new pokemon are selected each time
         public static Pokemon GetNewPokemon(int choice)
         {
-            // Adjusting choice (1-5) to index (0-4)
             var species = PokemonData.AllSpecies[choice - 1];
-
-            // Create a generic Pokemon instance and "map" the data over
             return new Pokemon(species);
         }
 
@@ -23,9 +20,8 @@ namespace PokemonBattle
         {
             List<Pokemon> myTeam = new List<Pokemon>();
             string[] validChoices = { "1", "2", "3", "4", "5" };
-
             Console.WriteLine("Welcome to the Pokemon Battle Game! Prepare to choose your team.");
-            Thread.Sleep(1500);
+            Thread.Sleep(1000);
             Console.Clear();
 
             // Loop 3 times to get 3 Pokemon
@@ -36,7 +32,8 @@ namespace PokemonBattle
                 while (!validSelection)
                 {
                     Console.WriteLine($"Please choose Pokemon #{i}:");
-                    Console.WriteLine("\n 1. Squirtle \n 2. Charmander \n 3. Bulbasaur \n 4. Pikachu \n 5. Pidgey");
+                    Console.WriteLine($"\n 1. {PokemonData.AllSpecies[0].Name} \n 2. {PokemonData.AllSpecies[1].Name} \n 3. {PokemonData.AllSpecies[2].Name} \n " +
+                        $"4. {PokemonData.AllSpecies[3].Name} \n 5. {PokemonData.AllSpecies[4].Name}");
 
                     string input = Console.ReadLine();
 
@@ -45,17 +42,15 @@ namespace PokemonBattle
                         int choice = int.Parse(input);
                         Pokemon p = GetNewPokemon(choice);
                         myTeam.Add(p);
-
-                        Console.WriteLine($"Added {p.Name} to your team!");
-                        validSelection = true;
-
                         Thread.Sleep(1000);
                         Console.Clear();
+                        Console.WriteLine($"Added {p.Name} to your team!");
+                        validSelection = true;
                     }
                     else
                     {
                         Console.Clear();
-                        Console.WriteLine("Invalid Input! Please pick a number between 1 and 5.");
+                        Console.WriteLine($"Invalid Input! Please pick a number between 0 and {PokemonData.AllSpecies.Count}.");
                     }
                 }
             }

@@ -26,43 +26,45 @@ namespace PokemonBattle
 
         public void StartBattle()
         {
+            Console.WriteLine($"Which Pokemon would you like to start with?\n1: {PlayerTeam[0].Name}\n2: {PlayerTeam[1].Name}\n3: {PlayerTeam[2].Name}");
+            string? input = Console.ReadLine();
+            if (int.Parse(input) >= 1 && int.Parse(input) <= 3)
+            {
+                var inputIndex = int.Parse(input);
+                Console.WriteLine($"I choose you {PlayerTeam[inputIndex - 1].Name}");
+                PlayerActivePokemon = PlayerTeam[inputIndex - 1];
+                Console.Clear();
+            }
+            bool playerGoesFirst = PlayerActivePokemon.Speed >= EnemyActivePokemon.Speed;
+            Console.WriteLine(playerGoesFirst ? "Your Pokemon is faster!\nYou go first!" : "Enemy Pokemon is faster!\nYou go second!");
             Console.WriteLine("The battle has begun!");
+            Thread.Sleep(1000);
+            Console.Clear();
             while (IsBattleActive())
             {
-                Console.WriteLine($"Which Pokemon would you like to start with?\n1: {PlayerTeam[0].Name}\n2: {PlayerTeam[1].Name}\n3: {PlayerTeam[2].Name}");
-                string? input = Console.ReadLine();
-                if (int.Parse(input) >= 1 && int.Parse(input) <= 3)
-                {
-                    var inputIndex = int.Parse(input);
-                    Console.WriteLine($"I choose you {PlayerTeam[inputIndex - 1].Name}");
-                    PlayerActivePokemon = PlayerTeam[inputIndex - 1];
-                }
                 bool isTurnTaken = false;
                 while (!isTurnTaken)
                 {
-                    Console.WriteLine($"Your active Pokemon is {PlayerActivePokemon.Name} with {PlayerActivePokemon.CurrentHP} and the enemy's active Pokemon is {EnemyActivePokemon.Name} with {EnemyActivePokemon.CurrentHP}.");
-                    Thread.Sleep(2000);
+                    Console.WriteLine($"Your Team: {PlayerTeam[0].Name}, {PlayerTeam[0].CurrentHP}/{PlayerTeam[0].MaxHP}\n" +
+                        $"{PlayerTeam[1].Name}, {PlayerTeam[1].CurrentHP}/{PlayerTeam[1].MaxHP}\n{PlayerTeam[2].Name}, {PlayerTeam[2].CurrentHP}/{PlayerTeam[2].MaxHP}");
+                    Console.WriteLine($"Enemy Team: {EnemyTeam[0].Name}, {EnemyTeam[0].CurrentHP}/{EnemyTeam[0].MaxHP}\n" +
+                        $"{EnemyTeam[1].Name}, {EnemyTeam[1].CurrentHP}/{EnemyTeam[1].MaxHP}\n{EnemyTeam[2].Name}, {EnemyTeam[2].CurrentHP}/{EnemyTeam[2].MaxHP}");
+                    Console.WriteLine($"Your active Pokemon is {PlayerActivePokemon.Name} with {PlayerActivePokemon.CurrentHP}\nEnemy's active Pokemon is {EnemyActivePokemon.Name} with {EnemyActivePokemon.CurrentHP}.");
+                    Thread.Sleep(1000);
                     string playerMove = GetPlayerMove();
                     string enemyMove = GetEnemyMove();
-                    if (PlayerActivePokemon.Speed >= EnemyActivePokemon.Speed)
-                    {
-                        Console.WriteLine("Player goes first");
-                    }
-                    else
-                    {
-                        Console.WriteLine("Enemy goes first");
-                    }
                     if (playerMove == "SWAP")
                     {
-                        if (!HandleManualSwitch())
+                        if (HandleManualSwitch())
                         {
-                            continue;
+                            ExecuteTurn(EnemyActivePokemon, PlayerActivePokemon, enemyMove);
+                            Thread.Sleep(1000);
+                            Console.Clear();
+                            isTurnTaken = true;
                         }
-                        ExecuteTurn(EnemyActivePokemon, PlayerActivePokemon, enemyMove);
                     }
                     else
                     {
-                        bool playerGoesFirst = PlayerActivePokemon.Speed > EnemyActivePokemon.Speed;
                         if (playerGoesFirst)
                         {
                             ExecuteTurn(PlayerActivePokemon, EnemyActivePokemon, playerMove);
@@ -70,6 +72,8 @@ namespace PokemonBattle
                             if (!EnemyActivePokemon.Condition.HasFlag(StatusCondition.Fainted))
                             {
                                 ExecuteTurn(EnemyActivePokemon, PlayerActivePokemon, enemyMove);
+                                Thread.Sleep(1000);
+                                Console.Clear();
                             }
                         }
                         else
@@ -78,6 +82,8 @@ namespace PokemonBattle
                             if (!PlayerActivePokemon.Condition.HasFlag(StatusCondition.Fainted))
                             {
                                 ExecuteTurn(PlayerActivePokemon, EnemyActivePokemon, playerMove);
+                                Thread.Sleep(1000);
+                                Console.Clear();
                             }
                         }
                         isTurnTaken = true;
@@ -173,11 +179,15 @@ namespace PokemonBattle
                 {
                     PlayerActivePokemon = remaining[0];
                     Console.WriteLine($"\nYour last Pokemon, {PlayerActivePokemon.Name}, joined the battle!");
+                    Thread.Sleep(500);
+                    Console.Clear();
                 }
                 else if (remaining.Count > 1)
                 {
                     Console.WriteLine("\nYour Pokemon fainted! You must choose a new one.");
                     HandleManualSwitch();
+                    Thread.Sleep(500);
+                    Console.Clear();
                 }
             }
             if (EnemyActivePokemon.Condition.HasFlag(StatusCondition.Fainted))
@@ -195,7 +205,8 @@ namespace PokemonBattle
             if (available.Count == 0)
             {
                 Console.WriteLine("No other Pokemon are able to battle!");
-                Thread.Sleep(1000);
+                Thread.Sleep(500);
+                Console.Clear();
                 return false;
             }
 
@@ -216,6 +227,8 @@ namespace PokemonBattle
                         return false;
                     }
                     Console.WriteLine("You cannot cancel! Your current Pokemon has fainted.");
+                    Thread.Sleep(500);
+                    Console.Clear();
                 }
 
                 if (int.TryParse(input, out int choice) && choice >= 1 && choice <= available.Count)
