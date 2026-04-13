@@ -29,49 +29,62 @@ namespace PokemonBattle
             Console.WriteLine("The battle has begun!");
             while (IsBattleActive())
             {
-                Console.WriteLine($"Your active Pokemon is {PlayerActivePokemon.Name} and the enemy's active Pokemon is {EnemyActivePokemon.Name}.");
-                Thread.Sleep(2000);
-                string playerMove = GetPlayerMove();
-                string enemyMove = GetEnemyMove();
-                if (PlayerActivePokemon.Speed >= EnemyActivePokemon.Speed)
+                Console.WriteLine($"Which Pokemon would you like to start with?\n1: {PlayerTeam[0].Name}\n2: {PlayerTeam[1].Name}\n3: {PlayerTeam[2].Name}");
+                string? input = Console.ReadLine();
+                if (int.Parse(input) >= 1 && int.Parse(input) <= 3)
                 {
-                    Console.WriteLine("Player goes first");
+                    var inputIndex = int.Parse(input);
+                    Console.WriteLine($"I choose you {PlayerTeam[inputIndex-1].Name}");
+                    PlayerActivePokemon = PlayerTeam[inputIndex-1];
                 }
-                else
+                bool isTurnTaken = false;
+                while (!isTurnTaken)
                 {
-                    Console.WriteLine("Enemy goes first");
-                }
-                if (playerMove == "SWAP")
-                {
-                    if (!HandleManualSwitch())
+                    Console.WriteLine($"Your active Pokemon is {PlayerActivePokemon.Name} with {PlayerActivePokemon.CurrentHP} and the enemy's active Pokemon is {EnemyActivePokemon.Name} with {EnemyActivePokemon.CurrentHP}.");
+                    Thread.Sleep(2000);
+                    string playerMove = GetPlayerMove();
+                    string enemyMove = GetEnemyMove();
+                    if (PlayerActivePokemon.Speed >= EnemyActivePokemon.Speed)
                     {
-                        continue;
-                    }
-                    ExecuteTurn(EnemyActivePokemon, PlayerActivePokemon, enemyMove);
-                }
-                else
-                {
-                    bool playerGoesFirst = PlayerActivePokemon.Speed > EnemyActivePokemon.Speed;
-                    if (playerGoesFirst)
-                    {
-                        ExecuteTurn(PlayerActivePokemon, EnemyActivePokemon, playerMove);
-
-                        if (!EnemyActivePokemon.Condition.HasFlag(StatusCondition.Fainted))
-                        {
-                            ExecuteTurn(EnemyActivePokemon, PlayerActivePokemon, enemyMove);
-                        }
+                        Console.WriteLine("Player goes first");
                     }
                     else
                     {
+                        Console.WriteLine("Enemy goes first");
+                    }
+                    if (playerMove == "SWAP")
+                    {
+                        if (!HandleManualSwitch())
+                        {
+                            continue;
+                        }
                         ExecuteTurn(EnemyActivePokemon, PlayerActivePokemon, enemyMove);
-                        if (!PlayerActivePokemon.Condition.HasFlag(StatusCondition.Fainted))
+                    }
+                    else
+                    {
+                        bool playerGoesFirst = PlayerActivePokemon.Speed > EnemyActivePokemon.Speed;
+                        if (playerGoesFirst)
                         {
                             ExecuteTurn(PlayerActivePokemon, EnemyActivePokemon, playerMove);
+
+                            if (!EnemyActivePokemon.Condition.HasFlag(StatusCondition.Fainted))
+                            {
+                                ExecuteTurn(EnemyActivePokemon, PlayerActivePokemon, enemyMove);
+                            }
                         }
+                        else
+                        {
+                            ExecuteTurn(EnemyActivePokemon, PlayerActivePokemon, enemyMove);
+                            if (!PlayerActivePokemon.Condition.HasFlag(StatusCondition.Fainted))
+                            {
+                                ExecuteTurn(PlayerActivePokemon, EnemyActivePokemon, playerMove);
+                            }
+                        }
+                        isTurnTaken = true;
                     }
+                    CheckAndSwitchFainted();
                 }
-                CheckAndSwitchFainted();
-            }            
+            }
         }
         public bool IsBattleActive()
         {
@@ -98,7 +111,7 @@ namespace PokemonBattle
                 $"3: {PlayerActivePokemon.MoveSet[2]}\n" +
                 $"4: {PlayerActivePokemon.MoveSet[3]}\n" +
                 $"5: Swap Pokemon");
-            string result = Console.ReadLine();
+            string? result = Console.ReadLine();
             if (int.TryParse(result, out int choice) && choice >= 1 && choice <= 4)
             {
                 return PlayerActivePokemon.MoveSet[choice - 1];
@@ -170,13 +183,12 @@ namespace PokemonBattle
             if (EnemyActivePokemon.Condition.HasFlag(StatusCondition.Fainted))
             {
                 EnemyActivePokemon = EnemyTeam.FirstOrDefault(p => !p.Condition.HasFlag(StatusCondition.Fainted));
-                if (EnemyActivePokemon != null)
-                    Console.WriteLine($"\nEnemy sent out {EnemyActivePokemon.Name}!");
+                if (EnemyActivePokemon != null) Console.WriteLine($"\nEnemy sent out {EnemyActivePokemon.Name}!");
             }
         }
 
 
-        private bool HandleManualSwitch() // Change void to bool
+        private bool HandleManualSwitch()
         {
             var available = PlayerTeam.Where(p => !p.Condition.HasFlag(StatusCondition.Fainted) && p != PlayerActivePokemon).ToList();
 
@@ -184,35 +196,34 @@ namespace PokemonBattle
             {
                 Console.WriteLine("No other Pokemon are able to battle!");
                 Thread.Sleep(1000);
-                return false; // No swap happened
+                return false;
             }
 
             while (true)
             {
-                Console.WriteLine("\nWho would you like to send out? (Press 3 to Cancel)");
+                Console.WriteLine("Who would you like to send out?");
                 for (int i = 0; i < available.Count; i++)
                 {
                     Console.WriteLine($"{i + 1}: {available[i].Name} (HP: {available[i].CurrentHP}/{available[i].MaxHP})");
                 }
+                Console.WriteLine($"{available.Count+1}: Cancel Pokemon Swap.");
+                string? input = Console.ReadLine();
 
-                string input = Console.ReadLine();
-
-                if (input == "3")
+                if (input == $"{available.Count+1}")
                 {
                     if (!PlayerActivePokemon.Condition.HasFlag(StatusCondition.Fainted))
                     {
-                        return false; // CANCELLED - return false
+                        return false;
                     }
                     Console.WriteLine("You cannot cancel! Your current Pokemon has fainted.");
-                    continue;
                 }
 
                 if (int.TryParse(input, out int choice) && choice >= 1 && choice <= available.Count)
                 {
                     PlayerActivePokemon = available[choice - 1];
-                    Console.WriteLine($"\nGo, {PlayerActivePokemon.Name}!");
+                    Console.WriteLine($"Go, {PlayerActivePokemon.Name}!");
                     Thread.Sleep(1500);
-                    return true; // SUCCESS - return true
+                    return true;
                 }
 
                 Console.WriteLine("Invalid selection.");

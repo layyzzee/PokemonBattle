@@ -35,7 +35,7 @@ namespace PokemonBattle
         public static double DamageMultiplier(PokemonType movetype, PokemonType defender)
         {
             //No modifier if pokemon type not in typechart
-            if (!TypeChart.ContainsKey(movetype)) return 1.0;
+            if (!TypeChart.ContainsKey(movetype)) return Constants.NORMAL_DAMAGE_MULTIPLIER;
             var (strongAgainst, weakAgainst) = TypeChart[movetype];
             if (strongAgainst.Contains(defender)) return 2.0;
             if (weakAgainst.Contains(defender)) return 0.5;
