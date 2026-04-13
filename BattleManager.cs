@@ -34,8 +34,8 @@ namespace PokemonBattle
                 if (int.Parse(input) >= 1 && int.Parse(input) <= 3)
                 {
                     var inputIndex = int.Parse(input);
-                    Console.WriteLine($"I choose you {PlayerTeam[inputIndex-1].Name}");
-                    PlayerActivePokemon = PlayerTeam[inputIndex-1];
+                    Console.WriteLine($"I choose you {PlayerTeam[inputIndex - 1].Name}");
+                    PlayerActivePokemon = PlayerTeam[inputIndex - 1];
                 }
                 bool isTurnTaken = false;
                 while (!isTurnTaken)
@@ -206,10 +206,10 @@ namespace PokemonBattle
                 {
                     Console.WriteLine($"{i + 1}: {available[i].Name} (HP: {available[i].CurrentHP}/{available[i].MaxHP})");
                 }
-                Console.WriteLine($"{available.Count+1}: Cancel Pokemon Swap.");
+                Console.WriteLine($"{available.Count + 1}: Cancel Pokemon Swap.");
                 string? input = Console.ReadLine();
 
-                if (input == $"{available.Count+1}")
+                if (input == $"{available.Count + 1}")
                 {
                     if (!PlayerActivePokemon.Condition.HasFlag(StatusCondition.Fainted))
                     {
