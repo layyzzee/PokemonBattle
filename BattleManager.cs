@@ -117,6 +117,9 @@ namespace PokemonBattle
                 $"3: {PlayerActivePokemon.MoveSet[2]}\n" +
                 $"4: {PlayerActivePokemon.MoveSet[3]}\n" +
                 $"5: Swap Pokemon");
+
+            //Could ForEach to get every pokemon
+
             string? result = Console.ReadLine();
             if (int.TryParse(result, out int choice) && choice >= 1 && choice <= 4)
             {
@@ -168,7 +171,7 @@ namespace PokemonBattle
             }
             Thread.Sleep(1500);
         }
-        //Add a Pokemon swap
+        //Add a Pokemon swap on Faint
         public void CheckAndSwitchFainted()
         {
             if (PlayerActivePokemon.Condition.HasFlag(StatusCondition.Fainted))
