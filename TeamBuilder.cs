@@ -24,6 +24,42 @@ namespace PokemonBattle
             Thread.Sleep(1000);
             Console.Clear();
 
+            //var validOption = new List<string>();
+            ////For loop to remove magic numbers
+            //for (int i = 0; i < PokemonData.AllSpecies.Count; i++)
+            //{
+            //    while (myTeam.Count < 3)
+            //    {
+            //        bool validSelection = false;
+            //        while (!validSelection)
+            //        {
+            //            validOption.Add(i.ToString());
+            //            Console.WriteLine("Please choose your Pokemon:");
+            //            Console.WriteLine($"{i + 1}: {PokemonData.AllSpecies[i].Name}");
+            //            string input = Console.ReadLine();
+            //            if (validChoices.Contains(input))
+            //            {
+            //                if (int.TryParse(input, out int choice))
+            //                {
+            //                    Pokemon p = GetNewPokemon(choice);
+            //                    myTeam.Add(p);
+            //                    Thread.Sleep(1000);
+            //                    Console.Clear();
+            //                    Console.WriteLine($"Added {p.Name} to your team!");
+            //                    validSelection = true;
+            //                }
+            //                Console.Clear();
+            //                Console.WriteLine("");
+            //            }
+            //            else
+            //            {
+            //                Console.Clear();
+            //                Console.WriteLine($"Invalid Input! Please pick a number between 0 and {PokemonData.AllSpecies.Count}.");
+            //            }
+            //        }
+            //    }
+            //}
+
             // Loop 3 times to get 3 Pokemon
             for (int i = 1; i <= 3; i++)
             {

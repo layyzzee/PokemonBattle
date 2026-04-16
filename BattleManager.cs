@@ -45,11 +45,12 @@ namespace PokemonBattle
                 bool isTurnTaken = false;
                 while (!isTurnTaken)
                 {
-                    Console.WriteLine($"Your Team: {PlayerTeam[0].Name}, {PlayerTeam[0].CurrentHP}/{PlayerTeam[0].MaxHP}\n" +
-                        $"{PlayerTeam[1].Name}, {PlayerTeam[1].CurrentHP}/{PlayerTeam[1].MaxHP}\n{PlayerTeam[2].Name}, {PlayerTeam[2].CurrentHP}/{PlayerTeam[2].MaxHP}");
-                    Console.WriteLine($"Enemy Team: {EnemyTeam[0].Name}, {EnemyTeam[0].CurrentHP}/{EnemyTeam[0].MaxHP}\n" +
-                        $"{EnemyTeam[1].Name}, {EnemyTeam[1].CurrentHP}/{EnemyTeam[1].MaxHP}\n{EnemyTeam[2].Name}, {EnemyTeam[2].CurrentHP}/{EnemyTeam[2].MaxHP}");
-                    Console.WriteLine($"Your active Pokemon is {PlayerActivePokemon.Name} with {PlayerActivePokemon.CurrentHP}\nEnemy's active Pokemon is {EnemyActivePokemon.Name} with {EnemyActivePokemon.CurrentHP}.");
+                    Console.WriteLine($"Your Team: {PlayerTeam[0].Name}, {PlayerTeam[0].CurrentHP}/{PlayerTeam[0].MaxHP} HP, {PlayerTeam[1].Name}, " +
+                        $"{PlayerTeam[1].CurrentHP}/{PlayerTeam[1].MaxHP} HP, {PlayerTeam[2].Name}, {PlayerTeam[2].CurrentHP}/{PlayerTeam[2].MaxHP} HP");
+                    Console.WriteLine($"Enemy Team: {EnemyTeam[0].Name}, {EnemyTeam[0].CurrentHP}/{EnemyTeam[0].MaxHP} HP\n" +
+                        $"{EnemyTeam[1].Name}, {EnemyTeam[1].CurrentHP}/{EnemyTeam[1].MaxHP} HP\n{EnemyTeam[2].Name}, {EnemyTeam[2].CurrentHP}/{EnemyTeam[2].MaxHP} HP");
+                    Console.WriteLine($"Your active Pokemon is {PlayerActivePokemon.Name} with {PlayerActivePokemon.CurrentHP} HP\n" +
+                        $"Enemy's active Pokemon is {EnemyActivePokemon.Name} with {EnemyActivePokemon.CurrentHP} HP.");
                     Thread.Sleep(1000);
                     string playerMove = GetPlayerMove();
                     string enemyMove = GetEnemyMove();
@@ -117,8 +118,6 @@ namespace PokemonBattle
                 $"3: {PlayerActivePokemon.MoveSet[2]}\n" +
                 $"4: {PlayerActivePokemon.MoveSet[3]}\n" +
                 $"5: Swap Pokemon");
-
-            //Could ForEach to get every pokemon
 
             string? result = Console.ReadLine();
             if (int.TryParse(result, out int choice) && choice >= 1 && choice <= 4)
