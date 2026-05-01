@@ -1,14 +1,31 @@
-Welcome to Pokemon Arena Battle!
+# Pokemon Arena Battle 🎮
 
-This is a personal project to develop my own knowledge and skillset of implementing C# logic to create a Pokemon battle game where the player plays against a random input CPU.
-First the player picks their own team of 3 Pokemon, then the CPU picks randomly. Whichever Pokemon that was picked first is used to compare speed and decide who gets the first turn.
-The damage modifiers are as follows:
-attacker uses a move which is strong against the enemy pokemon - 2x damage
-attacker uses a move which is the same type as they are - 1.5x damage
-attacker uses a move which is weak against the enemy pokemon - 0.5x damage
+## Project Overview ⚔️
+Welcome to the Arena! This project is a tactical, terminal-based battle simulator that pits a player against an unpredictable CPU opponent. 
 
-Players can swap out pokemon whenever they want, and they are forced to change when their current Pokemon reaches 0 hp.
-The game is over when one team loses all Pokemon
+The goal was to recreate the core mechanics of the classic Gen 1 battle system, focusing on team management, type-effectiveness logic, and turn-based state machines.
 
-To play this, you'll need to either have dotnet, vscode or visual Studio to run it.
-It's just a terminal game, and my goal is to add all gen1 pokemon, and patch any remaining issues / tweak functionality.
+## The Architectural Journey: Inheritance vs. Composition 🏗️
+This project served as a pivotal learning milestone. Initially, the engine was built using **Class Inheritance**, but as the complexity grew, I refactored the entire codebase to utilize **Composition**.
+
+*   **Why the shift?** Composition allowed for greater flexibility in assigning behaviors and types to Pokemon without the "fragile base class" trap. 
+*   **Result:** A more modular system where Pokemon "have" stats and moves rather than just inheriting them, making it easier to scale to the full Gen 1 roster.
+
+## Core Features 🛡️
+*   **Strategic Team Drafting:** Select a squad of 3 Pokemon to face off against a randomized CPU team.
+*   **Dynamic Battle Logic:** 
+    *   **Speed Check:** Initial turns are decided by a speed-stat comparison.
+    *   **STAB (Same Type Attack Bonus):** 1.5x damage when a Pokemon uses a move matching its own type.
+    *   **Type Advantage:** Fully implemented 2x (Super Effective) and 0.5x (Not Very Effective) damage modifiers.
+*   **Active Swapping:** Switch your active Pokemon at any time to gain a tactical edge or replace a fainted teammate.
+
+## Tech Stack 🛠️
+*   **Language:** C#
+*   **Runtime:** .NET 6.0+
+*   **Interface:** CLI (Command Line Interface)
+*   **Environment:** Visual Studio 2022 / VS Code
+
+## Future Roadmap 🗺️
+- [ ] Implement all 151 Original Gen 1 Pokemon.
+- [ ] Refine move-set logic (Status effects like Sleep/Paralysis).
+- [ ] Balance-tweak damage calculations for competitive parity.
