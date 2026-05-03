@@ -9,9 +9,9 @@ namespace PokemonBattle
     public class TeamBuilder
     {
         //Creating a pokemon getter so new pokemon are selected each time
-        public static Pokemon GetNewPokemon(int choice)
+        public static Pokemon GetNewPokemon(string choice)
         {
-            var species = PokemonData.AllSpecies[choice - 1];
+            var species = PokemonData.AllSpecies.FirstOrDefault(p => p.Name == choice);
             return new Pokemon(species);
         }
 
@@ -19,46 +19,9 @@ namespace PokemonBattle
         public static List<Pokemon> BuildPlayerTeam()
         {
             List<Pokemon> myTeam = new List<Pokemon>();
-            string[] validChoices = { "1", "2", "3", "4", "5" };
             Console.WriteLine("Welcome to the Pokemon Battle Game! Prepare to choose your team.");
             Thread.Sleep(1000);
             Console.Clear();
-
-            //var validOption = new List<string>();
-            ////For loop to remove magic numbers
-            //for (int i = 0; i < PokemonData.AllSpecies.Count; i++)
-            //{
-            //    while (myTeam.Count < 3)
-            //    {
-            //        bool validSelection = false;
-            //        while (!validSelection)
-            //        {
-            //            validOption.Add(i.ToString());
-            //            Console.WriteLine("Please choose your Pokemon:");
-            //            Console.WriteLine($"{i + 1}: {PokemonData.AllSpecies[i].Name}");
-            //            string input = Console.ReadLine();
-            //            if (validChoices.Contains(input))
-            //            {
-            //                if (int.TryParse(input, out int choice))
-            //                {
-            //                    Pokemon p = GetNewPokemon(choice);
-            //                    myTeam.Add(p);
-            //                    Thread.Sleep(1000);
-            //                    Console.Clear();
-            //                    Console.WriteLine($"Added {p.Name} to your team!");
-            //                    validSelection = true;
-            //                }
-            //                Console.Clear();
-            //                Console.WriteLine("");
-            //            }
-            //            else
-            //            {
-            //                Console.Clear();
-            //                Console.WriteLine($"Invalid Input! Please pick a number between 0 and {PokemonData.AllSpecies.Count}.");
-            //            }
-            //        }
-            //    }
-            //}
 
             // Loop 3 times to get 3 Pokemon
             for (int i = 1; i <= 3; i++)
@@ -68,15 +31,32 @@ namespace PokemonBattle
                 while (!validSelection)
                 {
                     Console.WriteLine($"Please choose Pokemon #{i}:");
-                    Console.WriteLine($"\n 1. {PokemonData.AllSpecies[0].Name} \n 2. {PokemonData.AllSpecies[1].Name} \n 3. {PokemonData.AllSpecies[2].Name} \n " +
-                        $"4. {PokemonData.AllSpecies[3].Name} \n 5. {PokemonData.AllSpecies[4].Name}");
+                    Console.WriteLine("Please type the name of your first pokemon, or type random to pick a random pokemon, or type help for a list of pokemon");
 
-                    string input = Console.ReadLine();
-
-                    if (validChoices.Contains(input))
+                    string input = Console.ReadLine()?.Trim().ToLower();
+                    if (string.IsNullOrEmpty(input))
                     {
-                        int choice = int.Parse(input);
-                        Pokemon p = GetNewPokemon(choice);
+                        Console.WriteLine("Please select a valid input. If you need help type 'help'");
+                        continue;
+                    }
+
+                    if (input == "help")
+                    {
+                        foreach (var pokemon in PokemonData.AllSpecies)
+                        {
+                            Console.WriteLine(pokemon.Name);
+                        }
+                        continue;
+                    }
+                    if (input == "random")
+                    {
+                        Random rand = new Random();
+                        input = PokemonData.AllSpecies[rand.Next(PokemonData.AllSpecies.Count)].Name.ToLower();
+                    }
+                    string pokemonName = input.Substring(0, 1).ToUpper() + input.Substring(1).ToLower();
+                    if (PokemonData.AllSpecies.Any(p => p.Name.ToLower() == input))
+                    {
+                        Pokemon p = GetNewPokemon(pokemonName);
                         myTeam.Add(p);
                         Thread.Sleep(1000);
                         Console.Clear();
@@ -102,14 +82,14 @@ namespace PokemonBattle
         {
             //Initialising
             List<Pokemon> enemyTeam = new List<Pokemon>();
-            string[] validChoices = new string[] { "1", "2", "3", "4", "5" };
             Random rand = new Random();
 
             for (int i = 0; i < 3; i++)
             {
                 // Picks a random index between 1 and 5
-                int enemyIdx = rand.Next(1, 6);
-                enemyTeam.Add(GetNewPokemon(enemyIdx));
+                int randomIndex = rand.Next(PokemonData.AllSpecies.Count);
+                var species = PokemonData.AllSpecies[randomIndex];
+                enemyTeam.Add(new Pokemon (species));
             }
             Console.WriteLine($"Enemy's team is {enemyTeam[0].Name}, {enemyTeam[1].Name}, and {enemyTeam[2].Name}!");
             Thread.Sleep(5000);
